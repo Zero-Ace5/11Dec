@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Image Resizer</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 30px;
+            max-width: 900px
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            padding: 8px;
+            width: 120px
+        }
+
+        .row {
+            margin: 10px 0
+        }
+
+        .preview img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            padding: 6px
+        }
+
+        .note {
+            color: #666;
+            font-size: 0.9rem
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Image Resizer</h2>
+
+    {% if error %}
+    <p style="color:red">{{ error }}</p>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+        <div class="row">
+            <input type="file" name="file" accept="image/*" required>
+        </div>
+
+        <div class="row">
+            <label>Width (px)</label>
+            <input type="number" name="width" min="1" placeholder="e.g. 800">
+            &nbsp;&nbsp;
+            <label>Height (px)</label>
+            <input type="number" name="height" min="1" placeholder="e.g. 600">
+        </div>
+
+        <div class="row">
+            <label><input type="checkbox" name="keep_aspect" checked> Keep aspect ratio</label>
+        </div>
+
+        <div class="row">
+            <button type="submit">Resize</button>
+        </div>
+
+        <p class="note">If you keep aspect ratio and provide only one dimension, the other is calculated. If you uncheck
+            it, the image will be stretched to the given width/height.</p>
+    </form>
+
+    {% if result %}
+    <hr>
+    <h3>Result</h3>
+    <p>Original: {{ result.orig_name }}</p>
+    <p>New size: {{ result.new_w }} × {{ result.new_h }} px</p>
+
+    <div class="preview">
+        <p>Preview (browser-scaled):</p>
+        <img src="{{ url_for('uploaded', filename=result.in_path) }}">
+    </div>
+
+    <p><a href="{{ url_for('resized_file', filename=result.out_name) }}">Download resized image</a></p>
+    {% endif %}
+</body>
+
+</html>

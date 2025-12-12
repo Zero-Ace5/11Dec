@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Universal → PDF Converter</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 40px;
+            max-width: 900px
+        }
+
+        input,
+        button {
+            padding: 8px;
+            margin: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Convert files to a single PDF</h2>
+    <p>Upload one or more files (images, text, audio, video, docx, pdf). The app will include each file as a page
+        (images embedded, text rendered, audio shows metadata, videos get a frame if ffmpeg is available, docx text
+        extracted if python-docx installed).</p>
+
+    {% if error %}
+    <p style="color:red">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="files" multiple required><br>
+        <button type="submit">Convert to PDF</button>
+    </form>
+
+    <p style="color:#666; font-size:0.9rem">Notes: ffmpeg recommended for video frames. For best DOCX fidelity, install
+        LibreOffice and convert separately if needed.</p>
+</body>
+
+</html>
